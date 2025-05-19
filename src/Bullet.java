@@ -1,29 +1,21 @@
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.net.URL;
-import java.util.ArrayList;
 
-public class Ship {
+public class Bullet {
 	private Image image;
 	private AffineTransform tx;
 	
 	double x, y;
 	int width, height;
-	double angle, velocity;
-	
-	boolean turning;
-	double turningAngle = 0.05;
+	double angle, velocity = 5;
 	
 	double scaleWidth = 2.0;		//change to scale image
 	double scaleHeight = 2.0; 		//change to scale image
 	
-	ArrayList<Bullet> bullets;
 	
-	int reloadTime = 100;
-	int ammo[];
-	
-	public Ship() {
-		image	= getImage("/imgs/"+"redship.png"); //load the image for Tree
+	public Bullet() {
+		image	= getImage("/imgs/"+"bullet.png"); //load the image for Tree
 		
 		//alter these
 		width = 0;
@@ -31,9 +23,6 @@ public class Ship {
 		x = 0;
 		y = 0;
 		angle = Math.PI / 2;
-		velocity = 2;
-		turning = false;
-		ammo = new int[3];
 
 		tx = AffineTransform.getTranslateInstance(0, 0);
 		
@@ -42,24 +31,17 @@ public class Ship {
 		
 	}
 	
-	public Ship(int x, int y) {
+	public Bullet(int x, int y, double angle) {
 		this();
 		this.x = x;
 		this.y = y;
-	}
-	
-	public void setTurning(boolean turning) {
-		this.turning = turning;
+		this.angle = angle;
 	}
 	
 	public void paint(Graphics g) {
 		//these are the 2 lines of code needed draw an image on the screen
 		Graphics2D g2 = (Graphics2D) g;
-		
-		if (turning) {
 
-			angle -= turningAngle;
-		}
 		
 		x += velocity * Math.cos(angle);
 		y -= velocity * Math.sin(angle);
@@ -93,7 +75,7 @@ public class Ship {
 	private Image getImage(String path) {
 		Image tempImage = null;
 		try {
-			URL imageURL = Ship.class.getResource(path);
+			URL imageURL = Bullet.class.getResource(path);
 			tempImage = Toolkit.getDefaultToolkit().getImage(imageURL);
 		} catch (Exception e) {
 			e.printStackTrace();
