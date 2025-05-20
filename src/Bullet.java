@@ -10,8 +10,8 @@ public class Bullet {
 	int width, height;
 	double angle, velocity = 5;
 	
-	double scaleWidth = 2.0;		//change to scale image
-	double scaleHeight = 2.0; 		//change to scale image
+	double scaleWidth = 1.0;		//change to scale image
+	double scaleHeight = 1.0; 		//change to scale image
 	
 	
 	public Bullet() {
@@ -31,11 +31,16 @@ public class Bullet {
 		
 	}
 	
-	public Bullet(int x, int y, double angle) {
+	public Bullet(double x, double y, double angle) {
 		this();
 		this.x = x;
 		this.y = y;
 		this.angle = angle;
+	}
+	
+	public void setPos(double d, double e) {
+		this.x = d;
+		this.y = e;
 	}
 	
 	public void paint(Graphics g) {

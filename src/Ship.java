@@ -19,8 +19,11 @@ public class Ship {
 	
 	ArrayList<Bullet> bullets;
 	
-	int reloadTime = 100;
+	int reloadCooldown = 10;
+	int reloadTime = reloadCooldown;
 	int ammo[];
+	Bullet bullet = new Bullet();
+	double ammoAngle = 0;
 	
 	public Ship() {
 		image	= getImage("/imgs/"+"redship.png"); //load the image for Tree
@@ -34,6 +37,7 @@ public class Ship {
 		velocity = 2;
 		turning = false;
 		ammo = new int[3];
+		bullets = new ArrayList<>();
 
 		tx = AffineTransform.getTranslateInstance(0, 0);
 		
@@ -52,12 +56,51 @@ public class Ship {
 		this.turning = turning;
 	}
 	
+	public void shoot() {
+		bullets.add(new Bullet(x, y, angle));
+	}
+	
 	public void paint(Graphics g) {
 		//these are the 2 lines of code needed draw an image on the screen
 		Graphics2D g2 = (Graphics2D) g;
+
+		reloadTime--;
+		
+		// full ammo means you can't reload
+		if (ammo[0] + ammo[1] + ammo[2] == 3) {
+			reloadTime = reloadCooldown;
+		}
+		
+		ammoAngle += 0.05;
+		if (reloadTime == 0) {
+			for (int i = 0; i < 3; i++) {
+				if (ammo[i] == 0) {
+					ammo[i] = 1;
+					break;
+				}
+			}
+			
+			reloadTime = reloadCooldown;
+		}
+		
+		// draw ammo around the ship
+		for (int i = 0; i < 3; i++) {
+			if (ammo[i] == 1) {
+				double R = 20;
+				double theta = ammoAngle + (2 * Math.PI / 3) * i;
+				
+				bullet.setPos(this.x + R * Math.cos(theta), this.y + R * Math.sin(theta));
+				bullet.paint(g);
+			}
+		}
+		
+		System.out.println(bullets.size());
+		for (Bullet b : bullets) {
+			b.paint(g);
+		}
+		
 		
 		if (turning) {
-
 			angle -= turningAngle;
 		}
 		

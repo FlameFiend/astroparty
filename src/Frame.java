@@ -34,8 +34,6 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		f.addKeyListener(this);
 		
 		
-		
-		
 		Timer t = new Timer(16, this);
 		t.start();
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -45,19 +43,28 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
-		ship.setTurning(true);
+		//System.out.println(e.getKeyCode());
+		
+		
+		if (e.getKeyCode() == 38) { // UP
+			ship.setTurning(true);
+		}
+		 if (e.getKeyCode() == 39) { // RIGHT
+			ship.shoot();
+		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
-		ship.setTurning(false);
+		
+		if (e.getKeyCode() == 38) {
+			ship.setTurning(false);
+		}
 	}
 
 	@Override
