@@ -20,7 +20,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		ship.paint(g);
 		ship2.paint(g);
 		
-		ship.isHit(0, 0);
+		System.out.println(ship.hitting(ship2));
 	}
 	
 	public static void main(String[] args) {
@@ -51,7 +51,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		System.out.println(e.getKeyCode());
+		//System.out.println(e.getKeyCode());
 		
 		
 		if (e.getKeyCode() == 38) { // UP

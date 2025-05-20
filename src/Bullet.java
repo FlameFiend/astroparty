@@ -18,8 +18,8 @@ public class Bullet {
 		image	= getImage("/imgs/"+"bullet.png"); //load the image for Tree
 		
 		//alter these
-		width = 0;
-		height = 0;
+		width = 7;
+		height = 7;
 		x = 0;
 		y = 0;
 		angle = Math.PI / 2;
@@ -49,6 +49,12 @@ public class Bullet {
 	public double getY() {
 		return this.y;
 	}
+	public int getWidth() {
+		return this.width;
+	}
+	public int getHeight() {
+		return this.height;
+	}
 	
 	public void paint(Graphics g) {
 		//these are the 2 lines of code needed draw an image on the screen
@@ -61,7 +67,6 @@ public class Bullet {
 		init(x,y);
 		
 		g2.drawImage(image,  tx, null);
-
 	}
 	
 	private void init(double a, double b) {

@@ -59,14 +59,34 @@ public class Ship {
 		this.turning = turning;
 	}
 	
-	public boolean isHit(double tx, double ty) {
-		double x1 = x;
-		double x2 = x + 10;
-		double y1 = y;
-		double y2 = y + 10;
+	public boolean inside(double tx, double ty) {
+		double x1 = x - 12;
+		double x2 = x + 12;
+		double y1 = y - 12;
+		double y2 = y + 12;
 		
 		return tx >= x1 && tx <= x2 && ty >= y1 && ty <= y2;
 	}
+	
+	public boolean isHit(Bullet b) {
+		double x1 = b.getX();
+		double x2 = x1 + b.getWidth();
+		double y1 = b.getY();
+		double y2 = y1 + b.getHeight();
+		
+		return inside(x1, y1) || inside(x1, y2) || inside(x2, y1) || inside(x2, y2);
+	}
+	
+	
+	public boolean hitting(Ship enemy) {
+		for (Bullet b : bullets) {
+			if (enemy.isHit(b)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	
 	public void shoot() {
 		for (int i = 0; i < 3; i++) {
@@ -127,6 +147,18 @@ public class Ship {
 		init(x,y);
 		
 		g2.drawImage(image,  tx, null);
+		
+		
+		
+		/*
+		// HITBOX
+		double x1 = x - 12;
+		double x2 = x + 12;
+		double y1 = y - 12;
+		double y2 = y + 12;
+		g2.setColor(Color.GREEN);
+		g2.fillRect((int) x1, (int) y1, (int) (x2 - x1), (int) (y2 - y1));
+		*/
 	}
 
 	private void init(double a, double b) {
