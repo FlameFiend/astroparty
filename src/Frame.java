@@ -19,6 +19,8 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		
 		ship.paint(g);
 		ship2.paint(g);
+		
+		ship.isHit(0, 0);
 	}
 	
 	public static void main(String[] args) {

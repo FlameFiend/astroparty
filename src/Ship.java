@@ -9,7 +9,7 @@ public class Ship {
 	
 	double x, y;
 	int width, height;
-	double angle, velocity = 3;
+	double angle, velocity = 0;
 	
 	boolean turning;
 	double turningAngle = 0.1;
@@ -57,6 +57,15 @@ public class Ship {
 	
 	public void setTurning(boolean turning) {
 		this.turning = turning;
+	}
+	
+	public boolean isHit(double tx, double ty) {
+		double x1 = x;
+		double x2 = x + 10;
+		double y1 = y;
+		double y2 = y + 10;
+		
+		return tx >= x1 && tx <= x2 && ty >= y1 && ty <= y2;
 	}
 	
 	public void shoot() {
