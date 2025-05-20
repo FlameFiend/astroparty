@@ -8,7 +8,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	static int height = 600;
 	
 	static Ship ship = new Ship(200, 200);
-	static Ship ship2 = new Ship(400, 200);
+	static Ship ship2 = new Ship2(400, 200);
 	
 	public void paint(Graphics g) {
 		super.paintComponent(g);
@@ -49,24 +49,38 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		//System.out.println(e.getKeyCode());
+		System.out.println(e.getKeyCode());
 		
 		
 		if (e.getKeyCode() == 38) { // UP
 			ship.setTurning(true);
 		}
-		 if (e.getKeyCode() == 39) { // RIGHT
+		if (e.getKeyCode() == 39) { // RIGHT
 			ship.shoot();
 		}
+		 
+		 
+		 
+		 if (e.getKeyCode() == 87) { // W
+			 ship2.setTurning(true);
+		 }
+		 if (e.getKeyCode() == 68) { // D
+			 ship2.shoot();
+		 }
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
 		
-		if (e.getKeyCode() == 38) {
+		if (e.getKeyCode() == 38) { // UP
 			ship.setTurning(false);
 		}
+		
+		
+		 if (e.getKeyCode() == 87) { // W
+			 ship2.setTurning(false);
+		 }
 	}
 
 	@Override

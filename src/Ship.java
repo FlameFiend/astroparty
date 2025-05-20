@@ -4,12 +4,12 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class Ship {
-	private Image image;
+	protected Image image;
 	private AffineTransform tx;
 	
 	double x, y;
 	int width, height;
-	double angle, velocity = 4;
+	double angle, velocity = 3;
 	
 	boolean turning;
 	double turningAngle = 0.1;
@@ -62,7 +62,7 @@ public class Ship {
 	public void shoot() {
 		for (int i = 0; i < 3; i++) {
 			if (ammo[i] == 1) {
-				bullets.add(new Bullet(x, y, angle));
+				bullets.add(new Bullet(x - 2, y - 2, angle));
 				ammo[i] = 0;
 				break;
 			}
@@ -118,30 +118,28 @@ public class Ship {
 		init(x,y);
 		
 		g2.drawImage(image,  tx, null);
+	}
 
+	private void init(double a, double b) {
+		int imgW = image.getWidth(null);
+		int imgH = image.getHeight(null);
+
+		if (imgW <= 0 || imgH <= 0) return;
+
+		tx = new AffineTransform();
+
+		tx.translate(a, b);
+
+		tx.rotate(-(angle - Math.PI / 2));
+
+		tx.translate(-imgW * scaleWidth / 2.0, -imgH * scaleHeight / 2.0);
+
+		// Step 4: Scale the image
+		tx.scale(scaleWidth, scaleHeight);
 	}
 	
-	private void init(double a, double b) {
-		
-		/*
-		tx.setToTranslation(a, b);
-		tx.scale(scaleWidth, scaleHeight);
-		*/
-		
-	 	int imgW = image.getWidth(null);
-	    int imgH = image.getHeight(null);
 
-	    if (imgW <= 0 || imgH <= 0) return; // Prevent invalid transforms
-
-	    tx = new AffineTransform();
-
-	    tx.translate(a, b);
-
-	    tx.rotate(-(angle - Math.PI / 2), imgW * scaleWidth / 2.0, imgH * scaleHeight / 2.0);
-	    tx.scale(scaleWidth, scaleHeight);
-	}
-
-	private Image getImage(String path) {
+	protected Image getImage(String path) {
 		Image tempImage = null;
 		try {
 			URL imageURL = Ship.class.getResource(path);
