@@ -9,17 +9,17 @@ public class Ship {
 	
 	double x, y;
 	int width, height;
-	double angle, velocity;
+	double angle, velocity = 4;
 	
 	boolean turning;
-	double turningAngle = 0.05;
+	double turningAngle = 0.1;
 	
 	double scaleWidth = 2.0;		//change to scale image
 	double scaleHeight = 2.0; 		//change to scale image
 	
 	ArrayList<Bullet> bullets;
 	
-	int reloadCooldown = 10;
+	int reloadCooldown = 50;
 	int reloadTime = reloadCooldown;
 	int ammo[];
 	Bullet bullet = new Bullet();
@@ -34,9 +34,12 @@ public class Ship {
 		x = 0;
 		y = 0;
 		angle = Math.PI / 2;
-		velocity = 2;
 		turning = false;
+		
+		
 		ammo = new int[3];
+		ammo[0] = ammo[1] = ammo[2] = 1;
+		
 		bullets = new ArrayList<>();
 
 		tx = AffineTransform.getTranslateInstance(0, 0);
@@ -57,7 +60,13 @@ public class Ship {
 	}
 	
 	public void shoot() {
-		bullets.add(new Bullet(x, y, angle));
+		for (int i = 0; i < 3; i++) {
+			if (ammo[i] == 1) {
+				bullets.add(new Bullet(x, y, angle));
+				ammo[i] = 0;
+				break;
+			}
+		}
 	}
 	
 	public void paint(Graphics g) {
@@ -94,7 +103,6 @@ public class Ship {
 			}
 		}
 		
-		System.out.println(bullets.size());
 		for (Bullet b : bullets) {
 			b.paint(g);
 		}

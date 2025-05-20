@@ -8,7 +8,7 @@ public class Bullet {
 	
 	double x, y;
 	int width, height;
-	double angle, velocity = 5;
+	double angle, velocity = 9;
 	
 	double scaleWidth = 1.0;		//change to scale image
 	double scaleHeight = 1.0; 		//change to scale image

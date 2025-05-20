@@ -8,6 +8,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	static int height = 600;
 	
 	static Ship ship = new Ship(200, 200);
+	static Ship ship2 = new Ship(400, 200);
 	
 	public void paint(Graphics g) {
 		super.paintComponent(g);
@@ -17,6 +18,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		g.fillRect(0, 0, width, height);
 		
 		ship.paint(g);
+		ship2.paint(g);
 	}
 	
 	public static void main(String[] args) {
