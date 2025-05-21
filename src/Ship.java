@@ -7,9 +7,11 @@ public class Ship {
 	protected Image image;
 	private AffineTransform tx;
 	
+	double maxVelocity = 4;
+	
 	double x, y;
 	int width, height;
-	double angle, velocity = 0;
+	double angle, velocity = maxVelocity;
 	
 	boolean turning;
 	double turningAngle = 0.1;
@@ -24,6 +26,12 @@ public class Ship {
 	int ammo[];
 	Bullet bullet = new Bullet();
 	double ammoAngle = 0;
+	
+	int dashTurnCooldown = 20;
+	int dashTurnTime = dashTurnCooldown;
+	int dashTurnStage = 100;
+	double[] dashTurnAngle = {-0.392699081699, -0.392699081699, -0.392699081699, -0.392699081699};
+	double[] dashTurnVelocity = {1, 1, 1, 1};
 	
 	public Ship() {
 		image	= getImage("/imgs/"+"redship.png"); //load the image for Tree
@@ -54,6 +62,18 @@ public class Ship {
 		this.x = x;
 		this.y = y;
 	}
+	
+	
+	public void dashTurn() {
+		if (dashTurnTime > 0) {
+			return;
+		}
+		
+		dashTurnTime = dashTurnCooldown;
+		dashTurnStage = 0;
+		
+	}
+	
 	
 	public void setTurning(boolean turning) {
 		this.turning = turning;
@@ -103,7 +123,7 @@ public class Ship {
 		Graphics2D g2 = (Graphics2D) g;
 
 		reloadTime--;
-		
+
 		// full ammo means you can't reload
 		if (ammo[0] + ammo[1] + ammo[2] == 3) {
 			reloadTime = reloadCooldown;
@@ -140,6 +160,20 @@ public class Ship {
 		if (turning) {
 			angle -= turningAngle;
 		}
+		
+		
+
+		if (dashTurnStage < dashTurnAngle.length) {
+			angle += dashTurnAngle[dashTurnStage];
+			velocity = dashTurnVelocity[dashTurnStage];
+			
+			System.out.println("turning");
+			dashTurnStage++;
+		} else {
+			dashTurnTime--;
+			velocity = maxVelocity;
+		}
+		
 		
 		x += velocity * Math.cos(angle);
 		y -= velocity * Math.sin(angle);

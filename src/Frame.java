@@ -60,6 +60,9 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		if (e.getKeyCode() == 39) { // RIGHT
 			ship.shoot();
 		}
+		if (e.getKeyCode() == 37) { // LEFT
+			ship.dashTurn();
+		}
 		 
 		 
 		 
