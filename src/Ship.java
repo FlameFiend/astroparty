@@ -31,7 +31,7 @@ public class Ship {
 	int dashTurnTime = dashTurnCooldown;
 	int dashTurnStage = 100;
 	double[] dashTurnAngle = {-0.392699081699, -0.392699081699, -0.392699081699, -0.392699081699};
-	double[] dashTurnVelocity = {1, 1, 1, 1};
+	double[] dashTurnVelocity = {1, 7, 6, 5};
 	
 	public Ship() {
 		image	= getImage("/imgs/"+"redship.png"); //load the image for Tree
