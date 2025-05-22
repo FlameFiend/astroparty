@@ -224,6 +224,24 @@ public class Ship {
 		}
 		return tempImage;
 	}
-	
+	public Rectangle getBounds() {
+	    int hitboxSize = 24;
+	    return new Rectangle((int)(x - hitboxSize / 2), (int)(y - hitboxSize / 2), hitboxSize, hitboxSize);
+	}
+	public boolean outOfBounds(int width, int height) {
+	    Rectangle r = getBounds();
+	    return r.x < 0 || r.y < 0 || r.x + r.width > width || r.y + r.height > height;
+	}
+
+	public void collide(int width, int height) {
+	    Rectangle r = getBounds();
+
+	    if (r.x < 0) x = r.width / 2.0;
+	    if (r.y < 0) y = r.height / 2.0;
+	    if (r.x + r.width > width) x = width - r.width / 2.0;
+	    if (r.y + r.height > height) y = height - r.height / 2.0;
+	    velocity =0;
+	}
+
 	
 }

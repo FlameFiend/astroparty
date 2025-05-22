@@ -4,9 +4,9 @@ import javax.swing.*;
 
 public class Frame extends JPanel implements ActionListener, MouseListener, KeyListener{
 	// frame width/height
-	static int width = 600;
-	static int height = 600;
-	
+	static int width = 800;
+	static int height = 800;
+	Map map = new Map(width, height, 80);
 	static Ship ship = new Ship(200, 200);
 	static Ship ship2 = new Ship2(400, 200);
 	
@@ -16,6 +16,8 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, width, height);
+		map.draw(g);
+		g.drawLine(0, 0, 585, 560);
 		
 		ship.paint(g);
 		ship2.paint(g);
@@ -29,6 +31,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	}
 
 	public Frame() {
+		map.generateMap(.12);
 		JFrame f = new JFrame("Astro Party");
 		f.setSize(new Dimension(width, height));
 		f.setBackground(Color.black);
@@ -71,6 +74,9 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		 }
 		 if (e.getKeyCode() == 68) { // D
 			 ship2.shoot();
+		 }
+		 if (e.getKeyCode() == 65) { // A
+			 ship2.dashTurn();
 		 }
 	}
 
@@ -121,6 +127,12 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
+		if(ship.outOfBounds(785, 760)) {
+			ship.collide(785, 760);
+		}
+		if(ship2.outOfBounds(785, 760)) {
+			ship2.collide(785, 760);
+		}
 		repaint();
 	}
 
