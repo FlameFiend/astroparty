@@ -9,6 +9,8 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	Map map = new Map(width, height, 80);
 	static Ship ship = new Ship(200, 200);
 	static Ship ship2 = new Ship2(400, 200);
+	long lastCollisionTime = 0;
+	final int collisionCD = 1000;
 	
 	public void paint(Graphics g) {
 		super.paintComponent(g);
@@ -17,19 +19,15 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, width, height);
 		map.draw(g);
-		g.drawLine(0, 0, 585, 560);
 		
 		ship.paint(g);
 		ship2.paint(g);
-		
-		System.out.println(ship.hitting(ship2));
 	}
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Frame f = new Frame();
 	}
-
 	public Frame() {
 		map.generateMap(.12);
 		JFrame f = new JFrame("Astro Party");
@@ -46,6 +44,14 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setVisible(true);
 	}
+	public void resetGame() {
+	    ship.x = 200;
+	    ship.y = 200;
+	    ship2.x = 400;
+	    ship2.y = 200;
+	    map.generateMap(0.12);
+	}
+
 
 	@Override
 	public void keyTyped(KeyEvent e) {
@@ -126,6 +132,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		long now = System.currentTimeMillis();
 		// TODO Auto-generated method stub
 		if(ship.outOfBounds(785, 760)) {
 			ship.collide(785, 760);
@@ -133,6 +140,10 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		if(ship2.outOfBounds(785, 760)) {
 			ship2.collide(785, 760);
 		}
+		if ((ship.hitting(ship2) || ship2.hitting(ship)) && now - lastCollisionTime > collisionCD) {
+	        resetGame();
+	        lastCollisionTime = now;
+	    }
 		repaint();
 	}
 

@@ -106,8 +106,7 @@ public class Ship {
 		}
 		return false;
 	}
-	
-	
+
 	public void shoot() {
 		for (int i = 0; i < 3; i++) {
 			if (ammo[i] == 1) {
