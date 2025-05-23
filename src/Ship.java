@@ -117,7 +117,7 @@ public class Ship {
 		}
 	}
 	
-	public void paint(Graphics g) {
+	public void paint(Graphics g, Map map) {
 		//these are the 2 lines of code needed draw an image on the screen
 		Graphics2D g2 = (Graphics2D) g;
 
@@ -172,10 +172,17 @@ public class Ship {
 			dashTurnTime--;
 			velocity = maxVelocity;
 		}
+		//Wall collision prediction
+		double nextX = x + velocity * Math.cos(angle);
+		double nextY = y - velocity * Math.sin(angle);
 		
-		
-		x += velocity * Math.cos(angle);
-		y -= velocity * Math.sin(angle);
+		Rectangle nextBounds = new Rectangle((int) (nextX - 12), (int) (nextY - 12),24,24);
+		if(!map.checkCollision(nextBounds)) {
+			x = nextX;
+			y = nextY;
+		} else {
+			velocity = 0;
+		}
 		
 		init(x,y);
 		

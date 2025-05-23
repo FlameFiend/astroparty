@@ -20,8 +20,8 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		g.fillRect(0, 0, width, height);
 		map.draw(g);
 		
-		ship.paint(g);
-		ship2.paint(g);
+		ship.paint(g, map);
+		ship2.paint(g, map);
 	}
 	
 	public static void main(String[] args) {
