@@ -6,103 +6,89 @@ import java.util.ArrayList;
 public class Ship {
 	protected Image image;
 	private AffineTransform tx;
-	
-	double maxVelocity = 4;
-	
+
+	double maxVelocity = 6;
+	double acceleration = 0.1;
+
 	double x, y;
 	int width, height;
-	double angle, velocity = maxVelocity;
-	
+	double angle, velocity = 0;
+
 	boolean turning;
 	double turningAngle = 0.1;
-	
-	double scaleWidth = 2.0;		//change to scale image
-	double scaleHeight = 2.0; 		//change to scale image
-	
+
+	double scaleWidth = 2.0;
+	double scaleHeight = 2.0;
+
 	ArrayList<Bullet> bullets;
-	
+
 	int reloadCooldown = 50;
 	int reloadTime = reloadCooldown;
 	int ammo[];
 	Bullet bullet = new Bullet();
 	double ammoAngle = 0;
-	
+
 	int dashTurnCooldown = 20;
 	int dashTurnTime = dashTurnCooldown;
 	int dashTurnStage = 100;
 	double[] dashTurnAngle = {-0.392699081699, -0.392699081699, -0.392699081699, -0.392699081699};
 	double[] dashTurnVelocity = {1, 7, 6, 5};
-	
+
 	public Ship() {
-		image	= getImage("/imgs/"+"redship.png"); //load the image for Tree
-		
-		//alter these
+		image = getImage("/imgs/" + "redship.png");
+
 		width = 0;
 		height = 0;
 		x = 0;
 		y = 0;
 		angle = Math.PI / 2;
 		turning = false;
-		
-		
+
 		ammo = new int[3];
 		ammo[0] = ammo[1] = ammo[2] = 1;
-		
+
 		bullets = new ArrayList<>();
 
 		tx = AffineTransform.getTranslateInstance(0, 0);
-		
-		init(x, y); 				//initialize the location of the image
-									//use your variables
-		
+		init(x, y);
 	}
-	
+
 	public Ship(int x, int y) {
 		this();
 		this.x = x;
 		this.y = y;
 	}
-	
-	
+
 	public void dashTurn() {
-		if (dashTurnTime > 0) {
-			return;
-		}
-		
+		if (dashTurnTime > 0) return;
+
 		dashTurnTime = dashTurnCooldown;
 		dashTurnStage = 0;
-		
 	}
-	
-	
+
 	public void setTurning(boolean turning) {
 		this.turning = turning;
 	}
-	
+
 	public boolean inside(double tx, double ty) {
 		double x1 = x - 12;
 		double x2 = x + 12;
 		double y1 = y - 12;
 		double y2 = y + 12;
-		
 		return tx >= x1 && tx <= x2 && ty >= y1 && ty <= y2;
 	}
-	
+
 	public boolean isHit(Bullet b) {
 		double x1 = b.getX();
 		double x2 = x1 + b.getWidth();
 		double y1 = b.getY();
 		double y2 = y1 + b.getHeight();
-		
 		return inside(x1, y1) || inside(x1, y2) || inside(x2, y1) || inside(x2, y2);
 	}
-	
-	
+
 	public boolean hitting(Ship enemy) {
 		for (Bullet b : bullets) {
-			if (enemy.isHit(b)) {
-				return true;
-			}
+			if (enemy.isHit(b)) return true;
 		}
 		return false;
 	}
@@ -116,18 +102,15 @@ public class Ship {
 			}
 		}
 	}
-	
+
 	public void paint(Graphics g, Map map) {
-		//these are the 2 lines of code needed draw an image on the screen
 		Graphics2D g2 = (Graphics2D) g;
 
 		reloadTime--;
-
-		// full ammo means you can't reload
 		if (ammo[0] + ammo[1] + ammo[2] == 3) {
 			reloadTime = reloadCooldown;
 		}
-		
+
 		ammoAngle += 0.05;
 		if (reloadTime == 0) {
 			for (int i = 0; i < 3; i++) {
@@ -136,43 +119,39 @@ public class Ship {
 					break;
 				}
 			}
-			
 			reloadTime = reloadCooldown;
 		}
-		
-		// draw ammo around the ship
+
 		for (int i = 0; i < 3; i++) {
 			if (ammo[i] == 1) {
 				double R = 20;
 				double theta = ammoAngle + (2 * Math.PI / 3) * i;
-				
 				bullet.setPos(this.x + R * Math.cos(theta), this.y + R * Math.sin(theta));
 				bullet.paint(g);
 			}
 		}
-		
+
 		for (Bullet b : bullets) {
 			b.paint(g);
 		}
-		
-		
+
 		if (turning) {
 			angle -= turningAngle;
 		}
-		
-		
 
 		if (dashTurnStage < dashTurnAngle.length) {
 			angle += dashTurnAngle[dashTurnStage];
 			velocity = dashTurnVelocity[dashTurnStage];
-			
-			System.out.println("turning");
 			dashTurnStage++;
 		} else {
 			dashTurnTime--;
-			velocity = maxVelocity;
+			if (velocity < maxVelocity) {
+				velocity += acceleration;
+				if (velocity > maxVelocity) {
+					velocity = maxVelocity;
+				}
+			}
 		}
-		//Wall collision prediction
 		double nextX = x + velocity * Math.cos(angle);
 		double nextY = y - velocity * Math.sin(angle);
 		
@@ -185,40 +164,20 @@ public class Ship {
 		}
 		
 		init(x,y);
-		
-		g2.drawImage(image,  tx, null);
-		
-		
-		
-		/*
-		// HITBOX
-		double x1 = x - 12;
-		double x2 = x + 12;
-		double y1 = y - 12;
-		double y2 = y + 12;
-		g2.setColor(Color.GREEN);
-		g2.fillRect((int) x1, (int) y1, (int) (x2 - x1), (int) (y2 - y1));
-		*/
+		g2.drawImage(image, tx, null);
 	}
 
 	private void init(double a, double b) {
 		int imgW = image.getWidth(null);
 		int imgH = image.getHeight(null);
-
 		if (imgW <= 0 || imgH <= 0) return;
 
 		tx = new AffineTransform();
-
 		tx.translate(a, b);
-
 		tx.rotate(-(angle - Math.PI / 2));
-
 		tx.translate(-imgW * scaleWidth / 2.0, -imgH * scaleHeight / 2.0);
-
-		// Step 4: Scale the image
 		tx.scale(scaleWidth, scaleHeight);
 	}
-	
 
 	protected Image getImage(String path) {
 		Image tempImage = null;
@@ -230,24 +189,23 @@ public class Ship {
 		}
 		return tempImage;
 	}
+
 	public Rectangle getBounds() {
-	    int hitboxSize = 24;
-	    return new Rectangle((int)(x - hitboxSize / 2), (int)(y - hitboxSize / 2), hitboxSize, hitboxSize);
+		int hitboxSize = 24;
+		return new Rectangle((int) (x - hitboxSize / 2), (int) (y - hitboxSize / 2), hitboxSize, hitboxSize);
 	}
+
 	public boolean outOfBounds(int width, int height) {
-	    Rectangle r = getBounds();
-	    return r.x < 0 || r.y < 0 || r.x + r.width > width || r.y + r.height > height;
+		Rectangle r = getBounds();
+		return r.x < 0 || r.y < 0 || r.x + r.width > width || r.y + r.height > height;
 	}
 
 	public void collide(int width, int height) {
-	    Rectangle r = getBounds();
-
-	    if (r.x < 0) x = r.width / 2.0;
-	    if (r.y < 0) y = r.height / 2.0;
-	    if (r.x + r.width > width) x = width - r.width / 2.0;
-	    if (r.y + r.height > height) y = height - r.height / 2.0;
-	    velocity =0;
+		Rectangle r = getBounds();
+		if (r.x < 0) x = r.width / 2.0;
+		if (r.y < 0) y = r.height / 2.0;
+		if (r.x + r.width > width) x = width - r.width / 2.0;
+		if (r.y + r.height > height) y = height - r.height / 2.0;
+		velocity = 0;
 	}
-
-	
 }

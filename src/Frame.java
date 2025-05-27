@@ -7,8 +7,8 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	static int width = 800;
 	static int height = 800;
 	Map map = new Map(width, height, 80);
-	static Ship ship = new Ship(200, 200);
-	static Ship ship2 = new Ship2(400, 200);
+	static Ship ship = new Ship(400, 200);
+	static Ship ship2 = new Ship2(200, 200);
 	long lastCollisionTime = 0;
 	final int collisionCD = 1000;
 	
@@ -45,10 +45,12 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		f.setVisible(true);
 	}
 	public void resetGame() {
-	    ship.x = 200;
-	    ship.y = 200;
-	    ship2.x = 400;
-	    ship2.y = 200;
+	    ship.x = map.getSpawnB().x;
+	    ship.y = map.getSpawnB().y;
+	    ship2.y = map.getSpawnA().y;
+	    ship.angle=Math.PI/2;
+	    ship2.angle=-Math.PI/2;
+	    ship.velocity=ship2.velocity=0;
 	    map.generateMap(0.12);
 	}
 
