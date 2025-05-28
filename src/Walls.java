@@ -20,9 +20,9 @@ public class Walls {
 
     public void draw(Graphics g) {
         for (Rectangle wall : wallRects) {
-        	g.setColor(Color.CYAN);
+        	g.setColor(Color.GRAY);
             g.fillRect(wall.x, wall.y, wall.width, wall.height);
-            g.setColor(Color.RED);
+            g.setColor(Color.ORANGE);
             g.fillRect(wall.x+3, wall.y+3, wall.width-6, wall.height-6);
         }
     }

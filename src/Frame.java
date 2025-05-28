@@ -48,6 +48,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		t.start();
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setVisible(true);
+		resetGame();
 	}
 	public void resetGame() {
 	    ship.x = map.getSpawnB().x;
@@ -57,6 +58,8 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	    ship.angle=Math.PI/2;
 	    ship2.angle=-Math.PI/2;
 	    ship.velocity=ship2.velocity=0;
+	    ship.ammo[0] = ship.ammo[1] = ship.ammo[2] = 1;
+	    ship2.ammo[0] = ship2.ammo[1] = ship2.ammo[2] = 1;
 	    map.generateMap(0.25);
 	}
 

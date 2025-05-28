@@ -136,9 +136,16 @@ public class Ship {
 			}
 		}
 
-		for (Bullet b : bullets) {
-			b.paint(g);
+		for (int i = bullets.size() - 1; i >= 0; i--) {
+		    Bullet b = bullets.get(i);
+		    Rectangle bulletBounds = new Rectangle((int) b.getX(), (int) b.getY(), b.getWidth(), b.getHeight());
+		    if (map.checkCollision(bulletBounds)) {
+		        bullets.remove(i); // remove bullet after hitting wall
+		    } else {
+		        b.paint(g);
+		    }
 		}
+
 
 		if (turning) {
 			angle -= turningAngle*turnDir;
@@ -159,13 +166,19 @@ public class Ship {
 		}
 		double nextX = x + velocity * Math.cos(angle);
 		double nextY = y - velocity * Math.sin(angle);
-		
-		Rectangle nextBounds = new Rectangle((int) (nextX - 12), (int) (nextY - 12),24,24);
-		if(!map.checkCollision(nextBounds)) {
-			x = nextX;
-			y = nextY;
+
+		Rectangle nextXBounds = new Rectangle((int) (nextX - 12), (int) (y - 12), 24, 24);
+		if (!map.checkCollision(nextXBounds)) {
+		    x = nextX;
 		} else {
-			velocity = 0;
+			velocity = 0.8;
+		}
+
+		Rectangle nextYBounds = new Rectangle((int) (x - 12), (int) (nextY - 12), 24, 24);
+		if (!map.checkCollision(nextYBounds)) {
+		    y = nextY;
+		} else {
+			velocity = 0.8;
 		}
 		
 		init(x,y);

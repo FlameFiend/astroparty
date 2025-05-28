@@ -8,18 +8,18 @@ public class Bullet {
 	
 	double x, y;
 	int width, height;
-	double angle, velocity = 10;
+	double angle, velocity = 15;
 	
-	double scaleWidth = 1.0;		//change to scale image
-	double scaleHeight = 1.0; 		//change to scale image
+	double scaleWidth = 1.5;		//change to scale image
+	double scaleHeight = 1.5; 		//change to scale image
 	
 	
 	public Bullet() {
 		image	= getImage("/imgs/"+"bullet.png"); //load the image for Tree
 		
 		//alter these
-		width = 7;
-		height = 7;
+		width = 10;
+		height = 10;
 		x = 0;
 		y = 0;
 		angle = Math.PI / 2;
@@ -100,5 +100,7 @@ public class Bullet {
 		return tempImage;
 	}
 	
-	
+	public Rectangle getBounds() {
+	    return new Rectangle((int) x, (int) y, width, height);
+	}
 }
