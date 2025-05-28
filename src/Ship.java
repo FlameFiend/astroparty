@@ -15,6 +15,7 @@ public class Ship {
 	double angle, velocity = 0;
 
 	boolean turning;
+	int turnDir = 1;
 	double turningAngle = 0.1;
 
 	double scaleWidth = 2.0;
@@ -68,6 +69,10 @@ public class Ship {
 
 	public void setTurning(boolean turning) {
 		this.turning = turning;
+	}
+	
+	public void setTurnDir(int turnDir) {
+		this.turnDir = turnDir;
 	}
 
 	public boolean inside(double tx, double ty) {
@@ -136,11 +141,11 @@ public class Ship {
 		}
 
 		if (turning) {
-			angle -= turningAngle;
+			angle -= turningAngle*turnDir;
 		}
 
 		if (dashTurnStage < dashTurnAngle.length) {
-			angle += dashTurnAngle[dashTurnStage];
+			angle += dashTurnAngle[dashTurnStage]*turnDir;
 			velocity = dashTurnVelocity[dashTurnStage];
 			dashTurnStage++;
 		} else {

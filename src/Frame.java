@@ -11,6 +11,11 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	static Ship ship2 = new Ship2(200, 200);
 	long lastCollisionTime = 0;
 	final int collisionCD = 1000;
+	boolean rightPressed = false;
+	boolean leftPressed = false;
+
+	boolean dPressed = false;
+	boolean aPressed = false;
 	
 	public void paint(Graphics g) {
 		super.paintComponent(g);
@@ -29,7 +34,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		Frame f = new Frame();
 	}
 	public Frame() {
-		map.generateMap(.12);
+		map.generateMap(.5);
 		JFrame f = new JFrame("Astro Party");
 		f.setSize(new Dimension(width, height));
 		f.setBackground(Color.black);
@@ -47,11 +52,12 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	public void resetGame() {
 	    ship.x = map.getSpawnB().x;
 	    ship.y = map.getSpawnB().y;
+	    ship2.x = map.getSpawnA().x;
 	    ship2.y = map.getSpawnA().y;
 	    ship.angle=Math.PI/2;
 	    ship2.angle=-Math.PI/2;
 	    ship.velocity=ship2.velocity=0;
-	    map.generateMap(0.12);
+	    map.generateMap(0.25);
 	}
 
 
@@ -62,44 +68,87 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		//System.out.println(e.getKeyCode());
-		
-		
-		if (e.getKeyCode() == 38) { // UP
-			ship.setTurning(true);
-		}
-		if (e.getKeyCode() == 39) { // RIGHT
-			ship.shoot();
-		}
-		if (e.getKeyCode() == 37) { // LEFT
-			ship.dashTurn();
-		}
-		 
-		 
-		 
-		 if (e.getKeyCode() == 87) { // W
-			 ship2.setTurning(true);
-		 }
-		 if (e.getKeyCode() == 68) { // D
-			 ship2.shoot();
-		 }
-		 if (e.getKeyCode() == 65) { // A
-			 ship2.dashTurn();
-		 }
+	    int code = e.getKeyCode();
+
+	    if (code == 38) {
+	        ship.shoot(); //UP
+	    }
+
+	    if (code == 40) {
+	        ship.dashTurn(); //DOWN
+	    }
+
+	    if (code == 39) {
+	        rightPressed = true; //RIGHT
+	    }
+
+	    if (code == 37) {
+	        leftPressed = true; //LEFT
+	    }
+
+	    if (code == 87) {
+	        ship2.shoot(); //W
+	    }
+
+	    if (code == 83) {
+	        ship2.dashTurn(); //S
+	    }
+
+	    if (code == 68) {
+	        dPressed = true; //D
+	    }
+
+	    if (code == 65) {
+	        aPressed = true; //A
+	    }
+
+	    updateTurning();
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
-		if (e.getKeyCode() == 38) { // UP
-			ship.setTurning(false);
-		}
-		
-		
-		 if (e.getKeyCode() == 87) { // W
-			 ship2.setTurning(false);
-		 }
+	    int code = e.getKeyCode();
+
+	    if (code == 39) {
+	        rightPressed = false;
+	    }
+
+	    if (code == 37) {
+	        leftPressed = false;
+	    }
+
+	    if (code == 68) {
+	        dPressed = false;
+	    }
+
+	    if (code == 65) {
+	        aPressed = false;
+	    }
+
+	    updateTurning();
+	}
+	private void updateTurning() {
+	    // ship 1 turning
+	    if (rightPressed && !leftPressed) {
+	        ship.setTurning(true);
+	        ship.setTurnDir(1);
+	    } else if (leftPressed && !rightPressed) {
+	        ship.setTurning(true);
+	        ship.setTurnDir(-1);
+	    } else {
+	        ship.setTurning(false);
+	    }
+
+	    // ship 2 turning
+	    if (dPressed && !aPressed) {
+	        ship2.setTurning(true);
+	        ship2.setTurnDir(1);
+	    } else if (aPressed && !dPressed) {
+	        ship2.setTurning(true);
+	        ship2.setTurnDir(-1);
+	    } else {
+	        ship2.setTurning(false);
+	    }
 	}
 
 	@Override
