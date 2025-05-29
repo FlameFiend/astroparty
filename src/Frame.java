@@ -31,7 +31,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		ship2.paint(g, map);
 		
 		g.setColor(Color.WHITE);
-		g.drawString("Red Kills: " + score + "    |    Blue Kills: " + score2, 325, 750);
+		g.drawString("Blue Kills: " + score2 + "    |    Red Kills: " + score, 325, 750);
 	}
 	
 	public static void main(String[] args) {
@@ -202,8 +202,20 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		if ((ship.hitting(ship2) || ship2.hitting(ship)) && now - lastCollisionTime > collisionCD) {
 			if(ship.hitting(ship2)) {
 				score++;
+				if(score == 5) {
+					// RED WINS & reset game & scores
+					System.out.println("RED WINS");
+					score=0;
+					score2=0;
+				}
 			} else {
 				score2++;
+				if(score2 == 5) {
+					// BLUE WINS & reset game & scores
+					System.out.println("BLUE WINS");
+					score2=0;
+					score=0;
+				}
 			}
 	        resetGame();
 	        lastCollisionTime = now;
