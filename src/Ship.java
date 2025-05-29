@@ -23,7 +23,7 @@ public class Ship {
 
 	private boolean backstepping = false;
 	private double backstepDistance = 70;  
-	private double backstepStep = 10;       
+	private double backstepStep = 10;        
 	private double backstepProgress = 0;  
 	private int backstepCooldown = 60;    
 	private int backstepTimer = 0;

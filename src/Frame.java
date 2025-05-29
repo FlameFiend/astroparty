@@ -15,7 +15,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	boolean leftPressed = false;
 
 	boolean dPressed = false;
-	boolean aPressed = false;
+	boolean aPressed = false; 
 	int score =0;
 	int score2=0;
 	
