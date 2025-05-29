@@ -7,7 +7,7 @@ public class Ship {
 	protected Image image;
 	private AffineTransform tx;
 
-	double maxVelocity = 6;
+	double maxVelocity = 7;
 	double acceleration = 0.1;
 
 	double x, y;
@@ -21,6 +21,13 @@ public class Ship {
 	double scaleWidth = 2.0;
 	double scaleHeight = 2.0;
 
+	private boolean backstepping = false;
+	private double backstepDistance = 70;  
+	private double backstepStep = 10;       
+	private double backstepProgress = 0;  
+	private int backstepCooldown = 60;    
+	private int backstepTimer = 0;
+
 	ArrayList<Bullet> bullets;
 
 	int reloadCooldown = 50;
@@ -28,12 +35,6 @@ public class Ship {
 	int ammo[];
 	Bullet bullet = new Bullet();
 	double ammoAngle = 0;
-
-	int dashTurnCooldown = 20;
-	int dashTurnTime = dashTurnCooldown;
-	int dashTurnStage = 100;
-	double[] dashTurnAngle = {-0.392699081699, -0.392699081699, -0.392699081699, -0.392699081699};
-	double[] dashTurnVelocity = {1, 7, 6, 5};
 
 	public Ship() {
 		image = getImage("/imgs/" + "redship.png");
@@ -60,12 +61,7 @@ public class Ship {
 		this.y = y;
 	}
 
-	public void dashTurn() {
-		if (dashTurnTime > 0) return;
 
-		dashTurnTime = dashTurnCooldown;
-		dashTurnStage = 0;
-	}
 
 	public void setTurning(boolean turning) {
 		this.turning = turning;
@@ -107,6 +103,14 @@ public class Ship {
 			}
 		}
 	}
+	public void backstep() {
+	    if (backstepping || backstepTimer > 0) return;
+
+	    backstepping = true;
+	    backstepProgress = 0;
+	}
+
+
 
 	public void paint(Graphics g, Map map) {
 		Graphics2D g2 = (Graphics2D) g;
@@ -151,17 +155,38 @@ public class Ship {
 			angle -= turningAngle*turnDir;
 		}
 
-		if (dashTurnStage < dashTurnAngle.length) {
-			angle += dashTurnAngle[dashTurnStage]*turnDir;
-			velocity = dashTurnVelocity[dashTurnStage];
-			dashTurnStage++;
-		} else {
-			dashTurnTime--;
-			if (velocity < maxVelocity) {
-				velocity += acceleration;
-				if (velocity > maxVelocity) {
-					velocity = maxVelocity;
-				}
+		if (backstepping) {
+			velocity=0;
+		    double dx = -backstepStep * Math.cos(angle);
+		    double dy = backstepStep * Math.sin(angle);
+
+		    double nextX = x + dx;
+		    double nextY = y + dy;
+
+		    Rectangle backXBounds = new Rectangle((int) (nextX - 12), (int) (y - 12), 24, 24);
+		    Rectangle backYBounds = new Rectangle((int) (x - 12), (int) (nextY - 12), 24, 24);
+
+		    if (!map.checkCollision(backXBounds)) {
+		        x = nextX;
+		    }
+		    if (!map.checkCollision(backYBounds)) {
+		        y = nextY;
+		    }
+
+		    backstepProgress += backstepStep;
+		    if (backstepProgress >= backstepDistance) {
+		        backstepping = false;
+		        backstepTimer = backstepCooldown;
+		        velocity = 2;
+		    }
+		} else if (backstepTimer > 0) {
+		    backstepTimer--;
+		}
+
+		if (velocity < maxVelocity) {
+			velocity += acceleration;
+			if (velocity > maxVelocity) {
+				velocity = maxVelocity;
 			}
 		}
 		double nextX = x + velocity * Math.cos(angle);

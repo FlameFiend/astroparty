@@ -16,6 +16,8 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 
 	boolean dPressed = false;
 	boolean aPressed = false;
+	int score =0;
+	int score2=0;
 	
 	public void paint(Graphics g) {
 		super.paintComponent(g);
@@ -27,6 +29,9 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		
 		ship.paint(g, map);
 		ship2.paint(g, map);
+		
+		g.setColor(Color.WHITE);
+		g.drawString("Red Kills: " + score + "    |    Blue Kills: " + score2, 325, 750);
 	}
 	
 	public static void main(String[] args) {
@@ -78,7 +83,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	    }
 
 	    if (code == 40) {
-	        ship.dashTurn(); //DOWN
+	        ship.backstep(); //DOWN
 	    }
 
 	    if (code == 39) {
@@ -94,7 +99,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	    }
 
 	    if (code == 83) {
-	        ship2.dashTurn(); //S
+	        ship2.backstep(); //S
 	    }
 
 	    if (code == 68) {
@@ -195,6 +200,11 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			ship2.collide(785, 760);
 		}
 		if ((ship.hitting(ship2) || ship2.hitting(ship)) && now - lastCollisionTime > collisionCD) {
+			if(ship.hitting(ship2)) {
+				score++;
+			} else {
+				score2++;
+			}
 	        resetGame();
 	        lastCollisionTime = now;
 	    }
