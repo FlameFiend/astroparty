@@ -202,7 +202,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		if ((ship.hitting(ship2) || ship2.hitting(ship)) && now - lastCollisionTime > collisionCD) {
 			if(ship.hitting(ship2)) {
 				score++;
-				if(score == 5) {
+				if(score >= 5) {
 					// RED WINS & reset game & scores
 					System.out.println("RED WINS");
 					score=0;
@@ -210,7 +210,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 				}
 			} else {
 				score2++;
-				if(score2 == 5) {
+				if(score2 >= 5) {
 					// BLUE WINS & reset game & scores
 					System.out.println("BLUE WINS");
 					score2=0;
