@@ -65,7 +65,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	    ship.velocity=ship2.velocity=0;
 	    ship.ammo[0] = ship.ammo[1] = ship.ammo[2] = 1;
 	    ship2.ammo[0] = ship2.ammo[1] = ship2.ammo[2] = 1;
-	    map.generateMap(0.25);
+	    map.generateMap(0.05+Math.log10(score+score2+1)/5);
 	}
 
 

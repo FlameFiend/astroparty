@@ -52,7 +52,7 @@ public class Map {
         return Math.abs(col - center.x) <= 1 && Math.abs(row - center.y) <= 1;
     }
 
-    // Recursive path check (very basic and slow for large maps)
+    // maze solving
     private boolean pathExists(int x, int y, boolean[][] visited) {
         int rows = grid.length;
         int cols = grid[0].length;
