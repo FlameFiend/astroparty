@@ -4,9 +4,9 @@ import javax.swing.*;
 
 public class Frame extends JPanel implements ActionListener, MouseListener, KeyListener{
 	// frame width/height
-	static int width = 800;
+	static int width = 734;
 	static int height = 800;
-	Map map = new Map(width, height, 80);
+	Map map = new Map(800, 800, 80);
 	static Ship ship = new Ship(400, 200);
 	static Ship ship2 = new Ship2(200, 200);
 	long lastCollisionTime = 0;
@@ -29,9 +29,10 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		
 		ship.paint(g, map);
 		ship2.paint(g, map);
-		
+		g.setColor(Color.GRAY);
+		g.fillRect(0, 720, 734, 43);
 		g.setColor(Color.WHITE);
-		g.drawString("Blue Kills: " + score2 + "    |    Red Kills: " + score, 325, 750);
+		g.drawString("Blue Kills: " + score2 + "    |    Red Kills: " + score, 288, 743);
 	}
 	
 	public static void main(String[] args) {
@@ -77,7 +78,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	@Override
 	public void keyPressed(KeyEvent e) {
 	    int code = e.getKeyCode();
-
+	    
 	    if (code == 38) {
 	        ship.shoot(); //UP
 	    }
@@ -108,6 +109,43 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 
 	    if (code == 65) {
 	        aPressed = true; //A
+	    }
+	    
+	    //CUSTOM MAP IMPORTING
+	    if(code == 49) { // 1
+	    	resetGame();
+	    	int[][] custommap = { {0,0,0,0,0,0,0,0,0}, {0,1,0,1,0,1,0,1,0}, {0,0,0,0,0,0,0,0,0}, {0,1,0,1,0,1,0,1,0}, {0,0,0,0,0,0,0,0,0}, {0,1,0,1,0,1,0,1,0}, {0,0,0,0,0,0,0,0,0}, {0,1,0,1,0,1,0,1,0}, {0,0,0,0,0,0,0,0,0} };
+	    	map.loadMap(custommap);
+	    	ship.x+=40;
+	    	ship2.x-=40;
+	    }
+	    if(code == 50) { // 2
+	    	resetGame();
+	    	int[][] custommap = { {0,0,0,0,0,0,0,0,0}, {0,1,1,0,0,0,1,1,0}, {0,1,0,0,1,0,0,1,0}, {0,0,0,0,0,0,0,0,0}, {0,0,0,1,0,1,0,0,0}, {0,0,0,0,0,0,0,0,0}, {0,1,0,0,1,0,0,1,0}, {0,1,1,0,0,0,1,1,0}, {0,0,0,0,0,0,0,0,0} };
+	    	map.loadMap(custommap);
+	    	ship.x+=40;
+	    	ship2.x-=40;
+	    }
+	    if(code == 51) { // 3
+	    	resetGame();
+	    	int[][] custommap = { {0,0,0,1,0,0,0,1,1}, {0,0,0,1,0,1,0,0,1}, {0,0,0,0,0,1,0,0,0}, {1,1,0,0,0,0,1,1,0}, {0,0,0,0,1,0,0,0,0}, {0,1,1,0,0,0,0,1,1}, {0,0,0,1,0,0,0,0,0}, {1,0,0,1,0,1,0,0,0}, {1,1,0,0,0,1,0,0,0} };
+	    	map.loadMap(custommap);
+	    	ship.x+=40;
+	    	ship2.x-=40;
+	    }
+	    if(code == 52) { // 4
+	    	resetGame();
+	    	int[][] custommap = { {0,0,1,0,0,0,1,0,0}, {0,0,1,0,0,0,0,0,0}, {0,0,1,0,0,0,0,0,0}, {0,0,1,0,0,0,1,0,0}, {0,0,1,1,0,1,1,0,0}, {0,0,1,0,0,0,1,0,0}, {0,0,0,0,0,0,1,0,0}, {0,0,0,0,0,0,1,0,0}, {0,0,1,0,0,0,1,0,0} };
+	    	map.loadMap(custommap);
+	    	ship.x+=40;
+	    	ship2.x-=40;
+	    }
+	    if(code == 53) { // 5
+	    	resetGame();
+	    	int[][] custommap = { {0,0,0,0,1,0,0,0,1}, {0,0,0,1,1,0,0,0,1}, {0,1,1,1,0,0,0,0,0}, {0,0,1,1,0,0,0,0,0}, {0,0,0,1,0,0,0,1,0}, {0,0,0,0,0,0,1,1,0}, {0,1,0,0,0,1,1,0,0}, {1,1,1,0,0,1,1,0,0}, {1,1,1,0,1,1,0,0,0} };
+	    	map.loadMap(custommap);
+	    	ship.x+=40;
+	    	ship2.x-=40;
 	    }
 
 	    updateTurning();
@@ -193,11 +231,11 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	public void actionPerformed(ActionEvent e) {
 		long now = System.currentTimeMillis();
 		// TODO Auto-generated method stub
-		if(ship.outOfBounds(785, 760)) {
-			ship.collide(785, 760);
+		if(ship.outOfBounds(712, 712)) {
+			ship.collide(712, 712);
 		}
-		if(ship2.outOfBounds(785, 760)) {
-			ship2.collide(785, 760);
+		if(ship2.outOfBounds(712, 712)) {
+			ship2.collide(712, 712);
 		}
 		if ((ship.hitting(ship2) || ship2.hitting(ship)) && now - lastCollisionTime > collisionCD) {
 			if(ship.hitting(ship2)) {

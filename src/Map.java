@@ -47,6 +47,25 @@ public class Map {
             }
         }
     }
+    public void loadMap(int[][] newmap) {
+        this.grid = newmap;
+
+        int rows = grid.length;
+        int cols = grid[0].length;
+
+        spawnA = new Point(1, 1);
+        spawnB = new Point(cols - 2, rows - 2);
+
+        map = new Walls();
+
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                if (grid[row][col] == 1) {
+                    map.addWall(new Rectangle(col * tileSize, row * tileSize, tileSize, tileSize));
+                }
+            }
+        }
+    }
 
     private boolean isInSpawnZone(int col, int row, Point center) {
         return Math.abs(col - center.x) <= 1 && Math.abs(row - center.y) <= 1;
