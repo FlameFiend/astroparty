@@ -219,7 +219,7 @@ public class Ship {
 		init(x,y);
 		g2.drawImage(image, tx, null);
 	}
-
+ 
 	private void init(double a, double b) {
 		int imgW = image.getWidth(null);
 		int imgH = image.getHeight(null);

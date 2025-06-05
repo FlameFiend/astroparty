@@ -12,7 +12,7 @@ public class Walls {
 
     public void addWall(Rectangle wall) {
         wallRects.add(wall);
-    }
+    } 
 
     public ArrayList<Rectangle> getWallRects() {
         return wallRects;

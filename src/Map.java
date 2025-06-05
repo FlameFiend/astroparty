@@ -103,7 +103,7 @@ public class Map {
                pathExists(x, y + 1, visited) ||
                pathExists(x, y - 1, visited);
     }
-
+ 
     public void draw(Graphics g) {
         map.draw(g);
     }

@@ -13,7 +13,7 @@ public class Bullet {
 	double scaleWidth = 1.5;		//change to scale image
 	double scaleHeight = 1.5; 		//change to scale image
 	
-	
+	 
 	public Bullet() {
 		image	= getImage("/imgs/"+"bullet.png"); //load the image for Tree
 		
