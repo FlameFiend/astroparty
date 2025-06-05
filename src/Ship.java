@@ -6,6 +6,8 @@ import java.util.ArrayList;
 public class Ship {
 	protected Image image;
 	private AffineTransform tx;
+	
+	private boolean shielded;
 
 	double maxVelocity = 6;
 	double acceleration = 0.1;
@@ -84,8 +86,21 @@ public class Ship {
 		double x2 = x1 + b.getWidth();
 		double y1 = b.getY();
 		double y2 = y1 + b.getHeight();
+		return (inside(x1, y1) || inside(x1, y2) || inside(x2, y1) || inside(x2, y2)) && !shielded;
+	}
+
+	public void setShielded(boolean b) {
+		this.shielded = b;
+	}
+
+	public boolean isHit(Powerup b) {
+		double x1 = b.getX();
+		double x2 = x1 + b.getWidth();
+		double y1 = b.getY();
+		double y2 = y1 + b.getHeight();
 		return inside(x1, y1) || inside(x1, y2) || inside(x2, y1) || inside(x2, y2);
 	}
+
 
 	public boolean hitting(Ship enemy) {
 		for (Bullet b : bullets) {
@@ -119,6 +134,14 @@ public class Ship {
 	    ammo[0] = ammo[1] = ammo[2] = 1;
 	}
 
+	
+	public double getX() {
+		return this.x;
+	}
+	
+	public double getY() {
+		return this.y;
+	}
 
 
 	public void paint(Graphics g, Map map) {

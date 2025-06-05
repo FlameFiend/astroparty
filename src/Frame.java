@@ -11,6 +11,8 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	static Ship ship2 = new Ship2(200, 200);
 	static Ship ship3 = new Ship2(100, 600);
 	static Ship ship4 = new Ship(600, 200);
+	static Powerup powerup = new Powerup("shield", 300, 300);
+	
 	long lastCollisionTime = 0;
 	final int collisionCD = 1000;
 	boolean rightPressed = false;
@@ -46,6 +48,13 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		g.fillRect(0, 720, 734, 43);
 		g.setColor(Color.WHITE);
 		g.drawString("Blue Wins: " + score2 + "    |    Red Wins`: " + score, 288, 743);
+		
+		powerup.paint(g);
+		
+		powerup.check(ship);
+		powerup.check(ship2);
+		powerup.check(ship3);
+		powerup.check(ship4);
 	}
 	
 	public static void main(String[] args) {
