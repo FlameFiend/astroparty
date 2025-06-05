@@ -7,7 +7,7 @@ public class Ship {
 	protected Image image;
 	private AffineTransform tx;
 
-	double maxVelocity = 7;
+	double maxVelocity = 6;
 	double acceleration = 0.1;
 
 	double x, y;
@@ -35,7 +35,7 @@ public class Ship {
 	int ammo[];
 	Bullet bullet = new Bullet();
 	double ammoAngle = 0;
-
+	public boolean alive = true;
 	public Ship() {
 		image = getImage("/imgs/" + "redship.png");
 
@@ -109,10 +109,20 @@ public class Ship {
 	    backstepping = true;
 	    backstepProgress = 0;
 	}
+	public void reset(double startX, double startY) {
+	    alive = true;
+	    x = startX;
+	    y = startY;
+	    velocity = 0;
+	    angle = Math.PI / 2;
+	    bullets.clear();
+	    ammo[0] = ammo[1] = ammo[2] = 1;
+	}
 
 
 
 	public void paint(Graphics g, Map map) {
+		if (!alive) return;
 		Graphics2D g2 = (Graphics2D) g;
 
 		reloadTime--;

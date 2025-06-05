@@ -15,6 +15,9 @@ public class Map {
         this.mapHeight = mapHeight;
         this.map = new Walls();
     }
+    public void setTileSize(int size) {
+    	tileSize = size;
+    }
 
     public void generateMap(double wallChance) {
         int cols = mapWidth / tileSize - 1;
@@ -27,8 +30,8 @@ public class Map {
             grid = new int[rows][cols];
             for (int row = 0; row < rows; row++) {
                 for (int col = 0; col < cols; col++) {
-                    if (isInSpawnZone(col, row, spawnA) || isInSpawnZone(col, row, spawnB)) {
-                        grid[row][col] = 0;
+                    if (isInSpawnZone(col, row, spawnA) || isInSpawnZone(col, row, spawnB) || isInCornerSafeZone(col, row, cols, rows)) {
+                        grid[row][col] = 0;  // keep clear
                     } else {
                         grid[row][col] = Math.random() < wallChance ? 1 : 0;
                     }
@@ -46,6 +49,19 @@ public class Map {
                 }
             }
         }
+    }
+
+    private boolean isInCornerSafeZone(int col, int row, int cols, int rows) {
+        // Top-left corner 3x3
+        if (col <= 2 && row <= 2) return true;
+        // Top-right corner 3x3
+        if (col >= cols - 3 && row <= 2) return true;
+        // Bottom-left corner 3x3
+        if (col <= 2 && row >= rows - 3) return true;
+        // Bottom-right corner 3x3
+        if (col >= cols - 3 && row >= rows - 3) return true;
+
+        return false;
     }
     public void loadMap(int[][] newmap) {
         this.grid = newmap;
