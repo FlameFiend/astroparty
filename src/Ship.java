@@ -267,7 +267,7 @@ public class Ship {
 	}
 
 	public Rectangle getBounds() {
-		int hitboxSize = 24;
+		int hitboxSize = 24;	
 		return new Rectangle((int) (x - hitboxSize / 2), (int) (y - hitboxSize / 2), hitboxSize, hitboxSize);
 	}
 

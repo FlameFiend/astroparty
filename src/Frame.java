@@ -28,6 +28,8 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	boolean num6Pressed = false;
 	boolean num3Pressed = false;
 	boolean num9Pressed = false;
+	
+	int flash =  0;
      
 	int score =0;
 	int score2=0;
@@ -55,6 +57,20 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		powerup.check(ship2);
 		powerup.check(ship3);
 		powerup.check(ship4);
+		
+		
+		if (flash > 0) {
+			flash -= 5;
+			
+			g.setColor(new Color(255, 0, 0, flash));
+			g.fillRect(0, 0, width, height);
+		}
+		if (flash < 0) {
+			flash += 5;
+			
+			g.setColor(new Color(0, 0, 255, -flash));
+			g.fillRect(0, 0, width, height);
+		}
 	}
 	
 	public static void main(String[] args) {
@@ -100,6 +116,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	    ship.velocity=ship2.velocity=0;
 	    ship.ammo[0] = ship.ammo[1] = ship.ammo[2] = 1;
 	    ship2.ammo[0] = ship2.ammo[1] = ship2.ammo[2] = 1;
+	    powerup = new Powerup("shield", 300, 300);
 	    map.generateMap(0.3+Math.log10(score+score2+1)/7);
 	}
 
@@ -353,7 +370,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		    }
 		    
 		    if (blueAllDead) {
-		        System.out.println("RED WINS");
+		        flash = 255;
 		        score++;
 		        resetGame();
 		        lastCollisionTime = now;
@@ -370,7 +387,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		    }
 		    
 		    if (redAllDead) {
-		        System.out.println("BLUE WINS");
+		        flash = -255;
 		        score2++;
 		        resetGame();
 		        lastCollisionTime = now;

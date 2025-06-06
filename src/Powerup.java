@@ -6,6 +6,7 @@ public class Powerup {
 	private Image image;
 	private AffineTransform tx;
 	
+	// variables to store information about the powerup
 	String type;
 	
 	Ship player;
@@ -22,7 +23,7 @@ public class Powerup {
 	public Powerup() {
 		image = getImage("/imgs/"+"blueship.png");
 
-		//alter these
+		//initialize variables
 		width = 30;
 		height = 30;
 		x = 0;
@@ -37,6 +38,7 @@ public class Powerup {
 									//use your variables
 	}
 	
+	// alternate constructor for powerup
 	public Powerup(String tp, double x, double y) {
 		this();
 		this.type = tp;
@@ -48,6 +50,8 @@ public class Powerup {
 		}
 	}
 	
+	// checks if a ship is currently intersecting the powerup
+	// if it is grant it immunity and subtract from the duration
 	void check(Ship s) {
 		if(player == null) {
 			if (s.isHit(this)) {
@@ -62,6 +66,25 @@ public class Powerup {
 		}
 	}
 	
+	public void paint(Graphics g) {
+		//these are the 2 lines of code needed draw an image on the screen
+		Graphics2D g2 = (Graphics2D) g;
+
+		if (player != null) {
+			x = player.getX() - 12;
+			y = player.getY() - 12;
+		}
+		
+		init(x,y);
+		
+		// only draw image if there is duration remaining
+		if (duration > 0) {
+			g2.drawImage(image,  tx, null);
+		}
+		//g2.drawRect((int) x, (int) y, width, height);
+	}
+	
+	// setters and getters
 	
 	public void setPos(double d, double e) {
 		this.x = d;
@@ -84,23 +107,6 @@ public class Powerup {
 	}
 	public int getHeight() {
 		return this.height;
-	}
-	
-	public void paint(Graphics g) {
-		//these are the 2 lines of code needed draw an image on the screen
-		Graphics2D g2 = (Graphics2D) g;
-
-		if (player != null) {
-			x = player.getX() - 12;
-			y = player.getY() - 12;
-		}
-		
-		init(x,y);
-		
-		if (duration > 0) {
-			g2.drawImage(image,  tx, null);
-		}
-		//g2.drawRect((int) x, (int) y, width, height);
 	}
 	
 	private void init(double a, double b) {
