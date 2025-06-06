@@ -46,6 +46,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		ship2.paint(g, map);
 		ship3.paint(g, map);
 		ship4.paint(g, map);
+		//bottom score bar
 		g.setColor(Color.GRAY);
 		g.fillRect(0, 720, 734, 43);
 		g.setColor(Color.WHITE);
@@ -58,7 +59,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		powerup.check(ship3);
 		powerup.check(ship4);
 		
-		
+		//win flash
 		if (flash > 0) {
 			flash -= 5;
 			
@@ -95,6 +96,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		resetGame();
 	}
 	public void resetGame() {
+		//reset all ship variables
 		map.setTileSize(60);
 	    ship.x = map.getSpawnB().x;
 	    ship.y = map.getSpawnB().y;

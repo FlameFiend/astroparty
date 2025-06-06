@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class Ship {
+	//initialize variables related to ship
 	protected Image image;
 	private AffineTransform tx;
 	
@@ -64,15 +65,15 @@ public class Ship {
 	}
 
 
-
+	//boolean for turning to make turning smooth when holding down the key
 	public void setTurning(boolean turning) {
 		this.turning = turning;
 	}
-	
+	//negative multiplier to change direction of turn
 	public void setTurnDir(int turnDir) {
 		this.turnDir = turnDir;
 	}
-
+	//ship hit box collision
 	public boolean inside(double tx, double ty) {
 		double x1 = x - 12;
 		double x2 = x + 12;
@@ -80,7 +81,7 @@ public class Ship {
 		double y2 = y + 12;
 		return tx >= x1 && tx <= x2 && ty >= y1 && ty <= y2;
 	}
-
+	//enemy ship hit by bullet
 	public boolean isHit(Bullet b) {
 		double x1 = b.getX();
 		double x2 = x1 + b.getWidth();
@@ -88,11 +89,11 @@ public class Ship {
 		double y2 = y1 + b.getHeight();
 		return (inside(x1, y1) || inside(x1, y2) || inside(x2, y1) || inside(x2, y2)) && !shielded;
 	}
-
+	//shield power up
 	public void setShielded(boolean b) {
 		this.shielded = b;
 	}
-
+	
 	public boolean isHit(Powerup b) {
 		double x1 = b.getX();
 		double x2 = x1 + b.getWidth();
@@ -101,7 +102,7 @@ public class Ship {
 		return inside(x1, y1) || inside(x1, y2) || inside(x2, y1) || inside(x2, y2);
 	}
 
-
+	//check if enemy hit
 	public boolean hitting(Ship enemy) {
 		for (Bullet b : bullets) {
 			if (enemy.isHit(b)) return true;
@@ -118,12 +119,14 @@ public class Ship {
 			}
 		}
 	}
+	//move back pixels gradually
 	public void backstep() {
 	    if (backstepping || backstepTimer > 0) return;
 
 	    backstepping = true;
 	    backstepProgress = 0;
 	}
+	//reset ship vars
 	public void reset(double startX, double startY) {
 	    alive = true;
 	    x = startX;
@@ -143,16 +146,16 @@ public class Ship {
 		return this.y;
 	}
 
-
 	public void paint(Graphics g, Map map) {
 		if (!alive) return;
+		//only run if ship is alive
 		Graphics2D g2 = (Graphics2D) g;
 
 		reloadTime--;
 		if (ammo[0] + ammo[1] + ammo[2] == 3) {
 			reloadTime = reloadCooldown;
 		}
-
+		//rotate the bullets
 		ammoAngle += 0.05;
 		if (reloadTime == 0) {
 			for (int i = 0; i < 3; i++) {
@@ -163,7 +166,7 @@ public class Ship {
 			}
 			reloadTime = reloadCooldown;
 		}
-
+		//bullets spin around ship
 		for (int i = 0; i < 3; i++) {
 			if (ammo[i] == 1) {
 				double R = 20;
@@ -172,7 +175,7 @@ public class Ship {
 				bullet.paint(g);
 			}
 		}
-
+		//bullet traveling
 		for (int i = bullets.size() - 1; i >= 0; i--) {
 		    Bullet b = bullets.get(i);
 		    Rectangle bulletBounds = new Rectangle((int) b.getX(), (int) b.getY(), b.getWidth(), b.getHeight());
@@ -183,16 +186,16 @@ public class Ship {
 		    }
 		}
 
-
+		//rotate ship
 		if (turning) {
 			angle -= turningAngle*turnDir;
 		}
-
+		//move back during backstep
 		if (backstepping) {
 			velocity=0;
 		    double dx = -backstepStep * Math.cos(angle);
 		    double dy = backstepStep * Math.sin(angle);
-
+		    //collision detection for backstep
 		    double nextX = x + dx;
 		    double nextY = y + dy;
 
@@ -215,13 +218,14 @@ public class Ship {
 		} else if (backstepTimer > 0) {
 		    backstepTimer--;
 		}
-
+		//acceleration
 		if (velocity < maxVelocity) {
 			velocity += acceleration;
 			if (velocity > maxVelocity) {
 				velocity = maxVelocity;
 			}
 		}
+		//general collision detection
 		double nextX = x + velocity * Math.cos(angle);
 		double nextY = y - velocity * Math.sin(angle);
 
@@ -270,12 +274,12 @@ public class Ship {
 		int hitboxSize = 24;	
 		return new Rectangle((int) (x - hitboxSize / 2), (int) (y - hitboxSize / 2), hitboxSize, hitboxSize);
 	}
-
+	//keep ship in map
 	public boolean outOfBounds(int width, int height) {
 		Rectangle r = getBounds();
 		return r.x < 0 || r.y < 0 || r.x + r.width > width || r.y + r.height > height;
 	}
-
+	//wall collision
 	public void collide(int width, int height) {
 		Rectangle r = getBounds();
 		if (r.x < 0) x = r.width / 2.0;

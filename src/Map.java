@@ -25,7 +25,7 @@ public class Map {
         spawnA = new Point(1, 1);
         spawnB = new Point(cols - 2, rows - 2);
         boolean valid = false;
-
+        //make spawns empty, corners 3x3
         while (!valid) {
             grid = new int[rows][cols];
             for (int row = 0; row < rows; row++) {
@@ -87,7 +87,7 @@ public class Map {
         return Math.abs(col - center.x) <= 1 && Math.abs(row - center.y) <= 1;
     }
 
-    // maze solving
+    //maze solving algorithm to make sure there is a path from top left to bottom right
     private boolean pathExists(int x, int y, boolean[][] visited) {
         int rows = grid.length;
         int cols = grid[0].length;
